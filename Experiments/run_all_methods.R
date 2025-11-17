@@ -44,10 +44,10 @@ run_all_methods <- function(Adj_list, truecoms) {
   K <- length(unique(truecoms))
   
   # Note: to run graph-tool, uncomment the following lines and comment the next
-  # methods_to_run <- c("dcmase", "ave_spherical", "sq-bias-adjusted",
-  #                    "mase-spherical","lmfo", "graph-tool")
   methods_to_run <- c("dcmase", "ave_spherical", "sq-bias-adjusted",
-                      "mase-spherical","lmfo")
+                      "mase-spherical","lmfo", "graph-tool")
+  # methods_to_run <- c("dcmase", "ave_spherical", "sq-bias-adjusted",
+  #                     "mase-spherical","lmfo")
   results <- sapply(methods_to_run, function(method) {
     print(method)
   
@@ -55,10 +55,10 @@ run_all_methods <- function(Adj_list, truecoms) {
     }
     )
   # Note: to run graph-tool, uncomment the following lines and comment the next
-  #names(results) <- c("DC-MASE", "Sum A", "S-A^2-Bias-adj",
-  #                    "MASE", "OLMF", "graph-tool")
-  names(results) <-  c("DC-MASE", "Sum A", "S-A^2-Bias-adj",
-                          "MASE", "OLMF")
+  names(results) <- c("DC-MASE", "Sum A", "S-A^2-Bias-adj",
+                      "MASE", "OLMF", "graph-tool")
+  #names(results) <-  c("DC-MASE", "Sum A", "S-A^2-Bias-adj",
+  #                        "MASE", "OLMF")
   return(results)
 }
 

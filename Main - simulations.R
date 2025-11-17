@@ -77,7 +77,7 @@ save(different_scenarios, file = "Results-allmethods-rep2-miscerror.RData")
 load("./Results-allmethods-rep2-miscerror.RData")
 png("Simulation-rep2-6scenarios-flipped.png", width = 1200, height = 1500, res = 200)
 make_ggplot_multipleBT2(different_scenarios, "Number of graphs", xbreaks = c(1, seq(10, 50, 10)),
-                       methodnames = c("DC-MASE", "Sum of adj. matrices", "Bias-adjusted SoS",  "MASE", "OLMF"))#, "graph-tool"))
+                       methodnames = c("DC-MASE", "Sum of adj. matrices", "Bias-adjusted SoS",  "MASE", "OLMF", "graph-tool"))
 dev.off()
 
 

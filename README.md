@@ -63,12 +63,18 @@ remotes::install_version("mclust", version = "5.4.7")
 remotes::install_version("ScorePlus", version = "0.1")
 remotes::install_version("reshape2", version = "1.4.4")
 remotes::install_version("ggplot2", version = "3.3.5")
-remotes::install_version("grid", version = "4.1.1")
+#remotes::install_version("grid", version = "4.1.1")
 remotes::install_version("plyr", version = "1.8.6")
 remotes::install_version("ggthemes", version = "4.2.4")
 remotes::install_version("maps", version = "3.4.0")
 remotes::install_version("mapdata", version = "2.3.0")
-remotes::install_version("parallel", version = "4.1.1")
+#remotes::install_version("parallel", version = "4.1.1")
+
+install.packages("ScorePlus")
+install.packages("clue")
+install.packages("psych")
+install.packages("rARPACK")
+install.packages("reticulate")
 ```
 
 ## Data Access
