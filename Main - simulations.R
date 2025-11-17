@@ -14,8 +14,8 @@ source("Experiments/run_all_methods.R")
 # Simulation settings
 #######################################
 
-num_replications <- 100
-num_layers <- list(1, 5, 10, 15, 20, 25,30,35, 40, 45, 50)
+num_replications <- 2 #100
+num_layers <- list(1,2) #list(1, 5, 10, 15, 20, 25,30,35, 40, 45, 50)
 
 parameters_list <- num_layers
 param_iter = parameters_list
@@ -67,16 +67,17 @@ different_scenarios$scenarioB <- factor(different_scenarios$scenarioB,
                                        levels = c("Same B", "Different B"))
 different_scenarios$scenarioT <- factor(different_scenarios$scenarioT,
                                         levels = c("Same \u0398", "Different \u0398", "Alternating \u0398"))
-#save(different_scenarios, file = "Results-allmethods-rep100-miscerror.RData")
+
+save(different_scenarios, file = "Results-allmethods-rep2-miscerror.RData")
 
 
 #######################################
 # Plot simulation results
 #######################################
-#load("Experiments/Results-allmethods-rep100-miscerror.RData")
-#png("Simulation-rep100-6scenarios-flipped.png", width = 1200, height = 1500, res = 200)
+load("./Results-allmethods-rep2-miscerror.RData")
+png("Simulation-rep2-6scenarios-flipped.png", width = 1200, height = 1500, res = 200)
 make_ggplot_multipleBT2(different_scenarios, "Number of graphs", xbreaks = c(1, seq(10, 50, 10)),
                        methodnames = c("DC-MASE", "Sum of adj. matrices", "Bias-adjusted SoS",  "MASE", "OLMF"))#, "graph-tool"))
-#dev.off()
+dev.off()
 
 
