@@ -93,6 +93,7 @@ simulation1 <- function(parameters, seed = 1989) {
   return(list(Adj_list = Adj_list, truecom = as.vector(Z %*% 1:K)))
 }
 
+
 ### Simulation 2: same theta, different B
 simulation2 <- function(parameters, seed = 1989) {
   set.seed(seed)
@@ -122,8 +123,6 @@ simulation2 <- function(parameters, seed = 1989) {
   })
   return(list(Adj_list = Adj_list, truecom = as.vector(Z %*% 1:K)))
 }
-
-
 
 
 
@@ -189,10 +188,6 @@ simulation4 <- function(parameters, seed = 1989) {
 
 
 
-
-
-
-# Simulation 6
 ### Simulation 6: changing high degree
 simulation6 <- function(parameters, seed = 1989) {
   set.seed(seed)
@@ -235,10 +230,6 @@ simulation6 <- function(parameters, seed = 1989) {
 }
 
 
-
-
-
-# Simulation 7
 ### Simulation 7: changing high degree and random B
 simulation7 <- function(parameters, seed = 1989) {
   set.seed(seed)
@@ -281,3 +272,66 @@ simulation7 <- function(parameters, seed = 1989) {
 }
 
 
+
+### Simulation 8: same B, all the same theta
+simulation8 <- function(parameters, seed = 1989) {
+  set.seed(seed)
+  m <- parameters[1]
+  ave_deg <- 10
+  
+  # Generate network parameters ------------------------------------------------
+  n <- 150
+  K <- 3
+  Z <- kronecker(diag(K), rep(1, n/K))
+
+  degree_corrections <- lapply(1:m, function(i) rep(1, n))
+  #theta <- runif(n, min = 0.05, max = 1)
+  #theta <- rexp(n) + 0.2
+  #theta <- as.vector(theta / (Z%*%crossprod(Z,theta)/(n/K)))
+  #degree_corrections <- lapply(1:m, function(i) theta)
+
+  B <- 0.06*diag(K) + 0.04
+  B_matrices <- lapply(1:m, function(i) B)
+  
+  # Sample graphs --------------------------------------------------------------
+  Adj_list <- lapply(1:m, function(i) {
+    P <- tcrossprod((degree_corrections[[i]] * Z) %*% B_matrices[[i]], degree_corrections[[i]] * Z)
+    P <- (ave_deg*n/sum(P)) * P
+    sample_from_P(P)
+  })
+  return(list(Adj_list = Adj_list, truecom = as.vector(Z %*% 1:K)))
+}
+
+### Simulation 9: different B, all the same theta
+simulation9 <- function(parameters, seed = 1989) {
+  set.seed(seed)
+  m <- parameters[1]
+  ave_deg <- 10
+  
+  # Generate network parameters ------------------------------------------------
+  n <- 150
+  K <- 3
+  Z <- kronecker(diag(K), rep(1, n/K))
+
+  degree_corrections <- lapply(1:m, function(i) rep(1, n))
+  #theta <- runif(n, min = 0.05, max = 1)
+  #theta <- rexp(n) + 0.2
+  #theta <- as.vector(theta / (Z%*%crossprod(Z,theta)/(n/K)))
+  #degree_corrections <- lapply(1:m, function(i) theta)
+
+  B <- 0.06*diag(K) + 0.04
+  B_matrices <- lapply(1:m, function(i) {
+    p <- runif(1)
+    q <- runif(1)
+    (p-q) *diag(K) + q
+  })
+
+  
+  # Sample graphs --------------------------------------------------------------
+  Adj_list <- lapply(1:m, function(i) {
+    P <- tcrossprod((degree_corrections[[i]] * Z) %*% B_matrices[[i]], degree_corrections[[i]] * Z)
+    P <- (ave_deg*n/sum(P)) * P
+    sample_from_P(P)
+  })
+  return(list(Adj_list = Adj_list, truecom = as.vector(Z %*% 1:K)))
+}
