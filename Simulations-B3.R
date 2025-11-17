@@ -27,29 +27,29 @@ param_iter = parameters_list
 
 ######## added simulations 8 and 9 ###########
 # Same B all the same theta
-results_simulation8 <- iterate_parameters(simulation8, parameters_list, param_iter, num_replications)
+results_simulation8 <- iterate_parameters(simulationB3_8, parameters_list, param_iter, num_replications)
 # Diff B all the same theta
-results_simulation9 <- iterate_parameters(simulation9, parameters_list, param_iter, num_replications)
+results_simulation9 <- iterate_parameters(simulationB3_9, parameters_list, param_iter, num_replications)
 ###############################################
 
 # Same B same theta
-results_simulation1 <- iterate_parameters(sim_setting = simulation1, parameters_list, param_iter, num_replications)
+results_simulation1 <- iterate_parameters(sim_setting = simulationB3_1, parameters_list, param_iter, num_replications)
 # Different B same theta
-results_simulation2 <- iterate_parameters(sim_setting = simulation2, parameters_list, param_iter, num_replications)
+results_simulation2 <- iterate_parameters(sim_setting = simulationB3_2, parameters_list, param_iter, num_replications)
 
 # Diff B diff theta
-results_simulation3 <- iterate_parameters(simulation3, parameters_list, param_iter, num_replications)
+results_simulation3 <- iterate_parameters(simulationB3_3, parameters_list, param_iter, num_replications)
 # Same B different theta
-results_simulation4 <- iterate_parameters(simulation4, parameters_list, param_iter, num_replications)
+results_simulation4 <- iterate_parameters(simulationB3_4, parameters_list, param_iter, num_replications)
 
 ##############################################
 
 parameters_list <- lapply(param_iter, 
                           function(x) c(x, 150, 3))
 # Same B alternating theta
-results_simulation6 <- iterate_parameters(simulation6, parameters_list, param_iter, num_replications)
+results_simulation6 <- iterate_parameters(simulationB3_6, parameters_list, param_iter, num_replications)
 # Different B alternating theta
-results_simulation7 <- iterate_parameters(simulation7, parameters_list, param_iter, num_replications)
+results_simulation7 <- iterate_parameters(simulationB3_7, parameters_list, param_iter, num_replications)
 
 
 #######################################
@@ -85,14 +85,14 @@ different_scenarios$scenarioB <- factor(different_scenarios$scenarioB,
 different_scenarios$scenarioT <- factor(different_scenarios$scenarioT,
                                         levels = c("All Same \u0398", "Same \u0398", "Different \u0398", "Alternating \u0398"))
 
-save(different_scenarios, file = "Results-allmethods-addA-rep2-miscerror.RData")
+save(different_scenarios, file = "Results-allmethods-addA-rep2-miscerror-B3.RData")
 
 
 #######################################
 # Plot simulation results
 #######################################
-load("./Results-allmethods-addA-rep2-miscerror.RData")
-png("Simulation-rep2-8scenarios-flipped.png", width = 1200, height = 1500, res = 200)
+load("./Results-allmethods-addA-rep2-miscerror-B3.RData")
+png("Simulation-rep2-8scenarios-flipped-B3.png", width = 1200, height = 1500, res = 200)
 make_ggplot_multipleBT2(different_scenarios, "Number of graphs", xbreaks = c(1, seq(10, 50, 10)),
                        methodnames = c("DC-MASE", "Sum of adj. matrices", "Bias-adjusted SoS",  "MASE", "OLMF", "graph-tool"))
 dev.off()
