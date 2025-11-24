@@ -75,6 +75,17 @@ install.packages("clue")
 install.packages("psych")
 install.packages("rARPACK")
 install.packages("reticulate")
+install.packages("grid")
+install.packages("parallel")
+install.packages("igraph")
+install.packages("mclust")
+install.packages("ScorePlus")
+install.packages("reshape2")
+install.packages("ggplot2")
+install.packages("plyr")
+install.packages("ggthemes")
+install.packages("maps")
+install.packages("mapdata")
 ```
 
 ## Data Access

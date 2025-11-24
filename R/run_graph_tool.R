@@ -35,7 +35,7 @@ run_graph_tool <- function(Adj_list, K, id = NULL) {
   #adjacencies_to_graphml(Adj_list, graph_file)
   #command_gt <- paste("/usr/local/bin/python3 Python/graphtool-script.py", K, id)
   
-  python_path <- "/root/miniconda/envs/gt/bin/python3"
+  python_path <- "/root/miniconda3/envs/gt/bin/python3"
   graph_file <-  paste("temp/multilayer", id, ".graphml", sep="")
   result_file <- paste("temp/result", id,".csv", sep = "")
   adjacencies_to_graphml(Adj_list, graph_file)
