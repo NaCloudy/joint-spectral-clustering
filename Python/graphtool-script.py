@@ -2,6 +2,10 @@ from graph_tool.all import *
 import sys
 import pandas as pd
 import numpy as np
+from graph_tool import seed_rng
+
+np.random.seed(1989)
+seed_rng(1989)
 
 K = int(sys.argv[1])
 id = sys.argv[2]

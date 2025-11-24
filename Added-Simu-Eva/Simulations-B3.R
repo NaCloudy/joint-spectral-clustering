@@ -4,7 +4,7 @@
 #######################################
 
 # Load all methods for simulations
-source("Experiments/run_all_methods.R")
+source("./Experiments/run_all_methods.R")
 
 # Note: the  code excludes the method graph-tool by default.
 # To run graph-tool, install the Python package and uncomment
@@ -85,14 +85,14 @@ different_scenarios$scenarioB <- factor(different_scenarios$scenarioB,
 different_scenarios$scenarioT <- factor(different_scenarios$scenarioT,
                                         levels = c("All Same \u0398", "Same \u0398", "Different \u0398", "Alternating \u0398"))
 
-save(different_scenarios, file = "Results-allmethods-addA-rep2-miscerror-B3.RData")
+save(different_scenarios, file = "./Added-Simu-Eva/Results-allmethods-addA-rep2-miscerror-B3.RData")
 
 
 #######################################
 # Plot simulation results
 #######################################
-load("./Results-allmethods-addA-rep2-miscerror-B3.RData")
-png("Simulation-rep2-8scenarios-flipped-B3.png", width = 1200, height = 1500, res = 200)
+load("./Added-Simu-Eva/Results-allmethods-addA-rep2-miscerror-B3.RData")
+png("./Added-Simu-Eva/Figures/Simulation-rep2-8scenarios-flipped-B3.png", width = 1200, height = 1500, res = 200)
 make_ggplot_multipleBT2(different_scenarios, "Number of graphs", xbreaks = c(1, seq(10, 50, 10)),
                        methodnames = c("DC-MASE", "Sum of adj. matrices", "Bias-adjusted SoS",  "MASE", "OLMF", "graph-tool"))
 dev.off()
