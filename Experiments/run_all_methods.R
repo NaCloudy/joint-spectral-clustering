@@ -1314,3 +1314,62 @@ simulation_identifiability_m <- function(parameters, seed = 1989) {
   
   return(list(Adj_list = Adj_list, truecom = as.vector(Z %*% 1:K)))
 }
+
+simulation_identifiability_delta <- function(parameters, seed = 1989) {
+  set.seed(seed)
+  
+  m <- 20
+  delta <- parameters[1]  # proportion of A-type collapse layers
+  
+  ave_deg <- 10
+  
+  # Generate network parameters ------------------------------------------------
+  n <- 150
+  K <- 3
+  Z <- kronecker(diag(K), rep(1, n/K))
+  
+  theta <- rexp(n) + 0.2
+  theta <- as.vector(theta / (Z %*% crossprod(Z, theta) / (n/K)))
+  
+  # --- Define complementary rank-deficient B matrices (A & B) -----------------
+  # collapse 1 & 2
+  B_A <- matrix(c(
+    0.10, 0.10, 0.04,
+    0.10, 0.10, 0.04,
+    0.04, 0.04, 0.06
+  ), nrow = 3, byrow = TRUE)
+  
+  # collapse 2 & 3
+  B_B <- matrix(c(
+    0.11, 0.04, 0.04,
+    0.04, 0.09, 0.09,
+    0.04, 0.09, 0.09
+  ), nrow = 3, byrow = TRUE)
+  
+  # --- Layer-wise theta --------------------------------------------------------
+  degree_corrections <- lapply(1:m, function(i) theta)
+  
+  # --- Generate B_matrices based on proportion delta ---------------------------
+  # number of A and B layers
+  num_A <- round(delta * m)
+  num_B <- m - num_A
+  
+  # randomize the layer order (important!)
+  layer_types <- sample(c(rep("A", num_A), rep("B", num_B)))
+  
+  B_matrices <- lapply(1:m, function(i) {
+    if (layer_types[i] == "A") B_A else B_B
+  })
+  
+  # ----------------------------------------------------------------------------- 
+  # Sample graphs
+  Adj_list <- lapply(1:m, function(i) {
+    P <- tcrossprod((degree_corrections[[i]] * Z) %*% B_matrices[[i]],
+                    degree_corrections[[i]] * Z)
+    P <- (ave_deg * n / sum(P)) * P
+    sample_from_P(P)
+  })
+  
+  return(list(Adj_list = Adj_list, truecom = as.vector(Z %*% 1:K)))
+}
+
