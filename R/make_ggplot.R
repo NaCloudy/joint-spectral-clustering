@@ -131,6 +131,44 @@ make_ggplot_multipleBT2 <- function(different_scenarios, parameter_name, xbreaks
   p
 }
 
+make_ggplot_single <- function(different_scenarios, parameter_name,
+                               xbreaks = c(1, 5, 10, 15, 20, 25),
+                               methodnames = c("DC-MASE", "Sum A", "Sum A^2 bias adj.", 
+                                               "MASE", "OLMF", "graph-tool"),
+                               ylim = c(0,0.6)) {
+  require(ggplot2)
+  require(reshape2)
+  require(scales)
+  require(ggthemes)
+  
+  # 注意：只保留 parameter 作为 id.vars
+  results_melted <- melt(different_scenarios, 
+                         id.vars = c("parameter"),
+                         measure.vars = 1:6)
+  names(results_melted) <- c("parameter", "Method", "ARI")
+  
+  # 不再需要 ScenarioB / ScenarioT
+  resdf <- data_summary(results_melted, "ARI", c("parameter", "Method"))
+  
+  ggplot(resdf, aes(x = parameter, y = ARI)) +
+    geom_line(aes(color = Method, linetype = Method)) +
+    geom_point(aes(color = Method, shape = Method)) +
+    ylim(ylim) +
+    scale_x_continuous(breaks = xbreaks) +
+    ylab("Misclustering error") +
+    xlab(parameter_name) +
+    theme_bw() +
+    # 不再 facet
+    scale_color_manual(labels = methodnames,
+                       values = colorblind_pal()(8)[c(7,2,4,6,3,8)]) +
+    scale_shape_manual(labels = methodnames,
+                       values = c(19,17,15,7,3,8)) +
+    scale_linetype_manual(labels = methodnames,
+                          values = c(1:6)) +
+    theme(legend.position = "top",
+          legend.text.align = 0)
+}
+
 
 
 
