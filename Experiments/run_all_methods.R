@@ -12,7 +12,7 @@ source("R/make_ggplot.R")
 
 run_simulations <- function(sim_setting, parameters, repetitions = 20) {
   library(parallel)
-  cl = makeCluster(10)
+  cl = makeCluster(11)
   clusterEvalQ(cl = cl, source("Experiments/run_all_methods.R"))
   clusterEvalQ(cl = cl, source("Experiments/extrasimulations.R"))
   clusterExport(cl = cl, varlist = c("sim_setting", "parameters"),envir = environment()) 
