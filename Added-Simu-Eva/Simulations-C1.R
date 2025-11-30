@@ -29,7 +29,7 @@ save(results_simulationC1, file = "./Added-Simu-Eva/Results-addC1-rep100-miscerr
 # Plot simulation results
 #######################################
 load("./Added-Simu-Eva/Results-addC1-rep100-miscerror.RData")
-png("./Added-Simu-Eva/Figures/Simulation-C1-rep100-flipped.png", width = 1200, height = 1500, res = 200)
+png("./Added-Simu-Eva/Figures/Simulation-C1-rep100-flipped-modified.png", width = 1200, height = 1400, res = 200)
 make_ggplot_single(results_simulationC1, "Number of graphs", xbreaks = c(1, seq(10, 50, 10)),
                        methodnames = c("DC-MASE", "Sum of adj. matrices", "Bias-adjusted SoS",  "MASE", "OLMF", "graph-tool"))
 dev.off()

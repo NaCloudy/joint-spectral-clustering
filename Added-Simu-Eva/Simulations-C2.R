@@ -28,7 +28,7 @@ save(results_simulationC2, file = "./Added-Simu-Eva/Results-addC2-rep100-miscerr
 # Plot simulation results
 #######################################
 load("./Added-Simu-Eva/Results-addC2-rep100-miscerror.RData")
-png("./Added-Simu-Eva/Figures/Simulation-C2-rep100-flipped.png", width = 1200, height = 1500, res = 200)
+png("./Added-Simu-Eva/Figures/Simulation-C2-rep100-flipped-modified.png", width = 1200, height = 1400, res = 200)
 make_ggplot_single(results_simulationC2, "Proportion of A-type collapse layers", xbreaks = c(1, seq(0, 1, 0.1)),
                        methodnames = c("DC-MASE", "Sum of adj. matrices", "Bias-adjusted SoS",  "MASE", "OLMF", "graph-tool"))
 dev.off()
