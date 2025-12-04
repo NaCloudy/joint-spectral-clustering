@@ -1315,6 +1315,113 @@ simulation_identifiability_m <- function(parameters, seed = 1989) {
   return(list(Adj_list = Adj_list, truecom = as.vector(Z %*% 1:K)))
 }
 
+simulation_identifiability_m2 <- function(parameters, seed = 1989) {
+  set.seed(seed)
+  m <- parameters[1]
+  ave_deg <- 10
+  
+  # Generate network parameters ------------------------------------------------
+  n <- 150
+  K <- 3
+  Z <- kronecker(diag(K), rep(1, n/K))
+  
+#   theta <- rexp(n) + 0.2
+#   theta <- as.vector(theta / (Z %*% crossprod(Z, theta) / (n/K)))
+  
+  # --- Define complementary rank-deficient B matrices (A & B) -----------------
+  # collapse 1 & 2
+  B_A <- matrix(c(
+    0.10, 0.10, 0.04,
+    0.10, 0.10, 0.04,
+    0.04, 0.04, 0.06
+  ), nrow = 3, byrow = TRUE)
+  
+  # collapse 2 & 3
+  B_B <- matrix(c(
+    0.11, 0.04, 0.04,
+    0.04, 0.09, 0.09,
+    0.04, 0.09, 0.09
+  ), nrow = 3, byrow = TRUE)
+  
+  # --- Layer-wise theta --------------------------------------------------------
+  degree_corrections <- lapply(1:m, function(i) {
+    theta <- runif(n, min = 0.05, max = 1)
+    theta <- rexp(n) + 0.2
+    as.vector(theta / (Z%*%crossprod(Z,theta)/(n/K)))
+  })
+  
+  # --- New B_matrices: complementary collapse patterns -------------------------
+  B_matrices <- lapply(1:m, function(i) {
+    if (i %% 2 == 1) B_A else B_B
+  })
+  
+  # Sample graphs ---------------------------------------------------------------
+  Adj_list <- lapply(1:m, function(i) {
+    P <- tcrossprod((degree_corrections[[i]] * Z) %*% B_matrices[[i]],
+                    degree_corrections[[i]] * Z)
+    P <- (ave_deg * n / sum(P)) * P
+    sample_from_P(P)
+  })
+  
+  return(list(Adj_list = Adj_list, truecom = as.vector(Z %*% 1:K)))
+}
+
+simulation_identifiability_m3 <- function(parameters, seed = 1989) {
+  set.seed(seed)
+  m <- parameters[1]
+  ave_deg <- 10
+  
+  # Generate network parameters ------------------------------------------------
+  n <- 150
+  K <- 3
+  Z <- kronecker(diag(K), rep(1, n/K))
+  
+#   theta <- rexp(n) + 0.2
+#   theta <- as.vector(theta / (Z %*% crossprod(Z, theta) / (n/K)))
+  
+  # --- Define complementary rank-deficient B matrices (A & B) -----------------
+  # collapse 1 & 2
+  B_A <- matrix(c(
+    0.10, 0.10, 0.04,
+    0.10, 0.10, 0.04,
+    0.04, 0.04, 0.06
+  ), nrow = 3, byrow = TRUE)
+  
+  # collapse 2 & 3
+  B_B <- matrix(c(
+    0.11, 0.04, 0.04,
+    0.04, 0.09, 0.09,
+    0.04, 0.09, 0.09
+  ), nrow = 3, byrow = TRUE)
+  
+  # --- Layer-wise theta --------------------------------------------------------
+  # degree_corrections <- lapply(1:m, function(i) theta)
+  theta1 <- rep(c(rep(0.15, 0.5*n/K), rep(0.8, 0.5*n/K)), K)
+  theta2 <- 0.95 - theta1
+  theta1 <- as.vector(theta1 / (Z%*%crossprod(Z,theta1)/(n/K)))
+  theta2 <- as.vector(theta2 / (Z%*%crossprod(Z,theta2)/(n/K)))               
+  degree_corrections <- lapply(1:m, function(i) if(i%%2==1){
+    theta1
+  }else{
+    theta2
+  })
+  
+  # --- New B_matrices: complementary collapse patterns -------------------------
+  B_matrices <- lapply(1:m, function(i) {
+    if (i %% 2 == 1) B_A else B_B
+  })
+  
+  # Sample graphs ---------------------------------------------------------------
+  Adj_list <- lapply(1:m, function(i) {
+    P <- tcrossprod((degree_corrections[[i]] * Z) %*% B_matrices[[i]],
+                    degree_corrections[[i]] * Z)
+    P <- (ave_deg * n / sum(P)) * P
+    sample_from_P(P)
+  })
+  
+  return(list(Adj_list = Adj_list, truecom = as.vector(Z %*% 1:K)))
+}
+
 simulation_identifiability_delta <- function(parameters, seed = 1989) {
   set.seed(seed)
   
