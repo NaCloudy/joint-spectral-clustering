@@ -58,23 +58,27 @@ Each B-variant is tested across the same **8 scenarios** (Same/Different $B$ × 
 
 ### Setting C — Identifiability Failure
 
-The paper's Assumption 1 requires each layer to provide a **rank-$K$ signal** (i.e., $\text{rank}(B^{(\ell)}) = K$). I constructed a scenario that is identifiable at the population level across layers, but violates this per-layer rank condition:
+The paper's Assumption 1 requires each layer to provide a **rank-$K$ signal** (i.e., $\text{rank}(B^{(\ell)}) = K$). I constructed two complementary rank-deficient B matrices:
 
-- **Odd layers** use $B_A$ (communities 1 & 2 merged → rank 2):
-$$B_A = \begin{pmatrix} 0.10 & 0.10 & 0.04 \\ 0.10 & 0.10 & 0.04 \\ 0.04 & 0.04 & 0.06 \end{pmatrix}$$
-
-- **Even layers** use $B_B$ (communities 2 & 3 merged → rank 2):
-$$B_B = \begin{pmatrix} 0.11 & 0.04 & 0.04 \\ 0.04 & 0.09 & 0.09 \\ 0.04 & 0.09 & 0.09 \end{pmatrix}$$
+- $B_A$: communities 1 & 2 merged (rank 2)
+- $B_B$: communities 2 & 3 merged (rank 2)
 
 All three communities are distinguishable across layers combined, but each individual layer only provides 2-dimensional signal out of the required $K=3$.
 
+**C1 — L-sweep (x-axis: number of layers):** Layers alternate strictly between $B_A$ and $B_B$, with same $\Theta$ across layers. Tests whether more layers can compensate for the per-layer rank deficiency.
+
+**C2 — delta-sweep (x-axis: proportion of $B_A$-type layers $\delta \in [0,1]$):** Fixes $L=20$ layers, randomizes the $B_A$/$B_B$ assignment at proportion $\delta$. At $\delta=0$ or $1$, all layers are of one type (completely non-identifiable); at $\delta=0.5$, both collapse patterns are equally represented. Tested under three theta structures:
+- Same $\Theta$ across layers (`Simulations-C2.R`)
+- Independently random $\Theta$ per layer
+- Alternating $\Theta$ (`Simulations-C2-variants.R`)
+
 **Results:**
 
-| C1 (same $\Theta$) | C2 (different $\Theta$ variants) |
+| C1 (L-sweep) | C2 (delta-sweep, same $\Theta$) |
 |:---:|:---:|
 | ![C1](Added-Simulations/Figures/Simulation-C1-rep100-flipped-modified.png) | ![C2](Added-Simulations/Figures/Simulation-C2-rep100-flipped-modified.png) |
 
-**Key finding:** DC-MASE struggles even as the number of layers grows. When $\text{rank}(B^{(\ell)}) < K$, each layer's signal is too weak for the two-stage SVD to reliably recover all $K$ directions, and finite-sample noise dominates. This is a **failure case** demonstrating that Assumption 1 is not merely a technical condition — it is practically necessary for DC-MASE to work.
+**Key finding:** DC-MASE struggles in both experiments. More layers (C1) do not rescue performance when every layer is rank-deficient, and even a balanced mix of $B_A$/$B_B$ layers (C2, $\delta=0.5$) does not help — finite-sample noise dominates the weak per-layer signal. This is a **failure case** showing Assumption 1 is practically necessary, not just a technical artifact.
 
 ---
 
@@ -91,8 +95,9 @@ All three communities are distinguishable across layers combined, but each indiv
 │   ├── Simulations-B1.R       # Setting B1: linear DCSBM, 8 scenarios
 │   ├── Simulations-B2.R       # Setting B2: quadratic nonlinearity
 │   ├── Simulations-B3.R       # Setting B3: saturating nonlinearity
-│   ├── Simulations-C1.R       # Setting C: rank-deficient B (same Θ)
-│   ├── Simulations-C2.R       # Setting C: rank-deficient B (varying Θ)
+│   ├── Simulations-C1.R       # Setting C1: L-sweep, alternating rank-deficient B
+│   ├── Simulations-C2.R       # Setting C2: delta-sweep, same Θ
+│   ├── Simulations-C2-variants.R  # Setting C2: delta-sweep, random/alternating Θ
 │   ├── Figures/               # Generated plots
 │   └── Results-*.RData        # Cached results (100 reps each)
 ├── Data/
